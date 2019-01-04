@@ -25,7 +25,7 @@
          {name: "stop_down", path: "slot_stop_down.png"},
          {name: "stop_over", path: "slot_stop_over.png"},
          {name: "slot_ok", path: "slot_ok.png"},
-         {name: "slot_close", path: "slot_close.png"},
+         {name: "close", path: "slot_close.png"},
          {name: "item1", path: "1.png"},
          {name: "item2", path: "2.png"},
          {name: "item3", path: "3.png"},
@@ -116,7 +116,7 @@
        //放入开始按钮
        self.startLayer = new LSprite();
        addChild(self.startLayer);
-       var startButton = new LButton(new LBitmap(new LBitmapData(self.imgList["start"])), new LBitmap(new LBitmapData(self.imgList["start"])));
+       var startButton = new LButton(new LBitmap(new LBitmapData(self.imgList["start"])));
        startButton.x = 122;
        startButton.y = 525;
        startButton.addEventListener(LMouseEvent.MOUSE_UP, self.startEvent);
@@ -124,18 +124,26 @@
 
        //加入结果页，默认隐藏
        self.okLayer = new LSprite();
+       self.okLayer.visible = false;
        addChild(self.okLayer);
-       var resultButton = new LButton(new LBitmap(new LBitmapData(self.imgList["slot_ok"])), new LBitmap(new LBitmapData(self.imgList["slot_ok"])));
-       resultButton.x = 65;
-       resultButton.y = 73;
-       resultButton.addEventListener(LMouseEvent.MOUSE_UP, self.closeResult);
-       self.okLayer.addChild(resultButton);
-       self.okLayer.visible = true;
+
+       //加入结果页背景
+       var resultBitmap = new LBitmap(new LBitmapData(self.imgList["slot_ok"]));
+       resultBitmap.x = 117;
+       resultBitmap.y = 137;
+       self.okLayer.addChild(resultBitmap);
+
+       //加入结果页关闭按钮
+       var closeButton = new LButton(new LBitmap(new LBitmapData(self.imgList["close"])));
+       closeButton.x = 320;
+       closeButton.y = 480;
+       closeButton.addEventListener(LMouseEvent.MOUSE_UP, self.closeResult);
+       self.okLayer.addChild(closeButton);
 
        self.boxLayer.addEventListener(LEvent.ENTER_FRAME, self.onFrame);
      },
      stopEvent(event, currentTarget) {//停止按钮事件
-       //关闭滚动
+       //设置准备关闭滚动
        this.reelList[currentTarget.index].stopFlag = true;
 
        //设置为禁止状态
@@ -146,7 +154,7 @@
        this.startLayer.visible = false;
 
        var stopNum = Math.floor(Math.random() * (this.combination.length / 3));
-       for (var i = 0; i < 3; i++) {
+       for (var i = 1; i < 3; i++) {
          //显示关闭按钮
          this.stopBtnList[i].setState(LButton.STATE_ENABLE);
          this.stopBtnList[i].visible = true;
@@ -175,15 +183,10 @@
            this.stopBtnList[i].visible = false;
          }
 
-         if (this.reelList[0].stopNum >= 19) {//获奖
-           this.okLayer.visible = true;
-         } else {
-           this.startLayer.visible = true;
-         }
-
+         this.okLayer.visible = true;
        }
      },
-     closeResult() {//关闭结果页
+     closeResult() {//关闭结果页并显示开始按钮
        this.okLayer.visible = false;
        this.startLayer.visible = true;
      },
