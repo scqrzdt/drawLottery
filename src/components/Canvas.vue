@@ -173,7 +173,7 @@
            this.stopBtnList[i].visible = false;
          }
 
-         if (this.reelList[0].stopNum >= 19) {//获奖
+         if (this.reelList[0].stopNum >= 1) {//获奖
            this.okLayer.visible = true;
          } else {
            this.startLayer.visible = true;
