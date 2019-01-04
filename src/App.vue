@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-    <div id="myCanvas">loading……</div>
+    <Canvas></Canvas>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  import Canvas from '@/components/Canvas'
+
+  export default {
+    name: 'App',
+    components: {
+      Canvas
+    }
+  }
 </script>
 
 <style>
