@@ -25,6 +25,7 @@
          {name: "stop_down", path: "slot_stop_down.png"},
          {name: "stop_over", path: "slot_stop_over.png"},
          {name: "slot_ok", path: "slot_ok.png"},
+         {name: "slot_close", path: "slot_close.png"},
          {name: "item1", path: "1.png"},
          {name: "item2", path: "2.png"},
          {name: "item3", path: "3.png"},
@@ -100,12 +101,13 @@
          self.drawLayer.addChild(reel);
          self.reelList.push(reel);
 
-         //放入停止按钮
+         //放入停止按钮，默认隐藏且禁止点击
          var stopButton = new LButton(new LBitmap(new LBitmapData(self.imgList["stop_up"])), new LBitmap(new LBitmapData(self.imgList["stop_down"])), new LBitmap(new LBitmapData(self.imgList["stop_down"])), new LBitmap(new LBitmapData(self.imgList["stop_over"])));
          stopButton.x = 150 * i + 149;
          stopButton.y = 565;
          stopButton.index = i;
          stopButton.visible = false;
+         stopButton.setState(LButton.STATE_DISABLE);
          stopButton.addEventListener(LMouseEvent.MOUSE_UP, self.stopEvent);
          self.drawLayer.addChild(stopButton);
          self.stopBtnList.push(stopButton);
@@ -120,7 +122,7 @@
        startButton.addEventListener(LMouseEvent.MOUSE_UP, self.startEvent);
        self.startLayer.addChild(startButton);
 
-       //加入结果页
+       //加入结果页，默认隐藏
        self.okLayer = new LSprite();
        addChild(self.okLayer);
        var resultButton = new LButton(new LBitmap(new LBitmapData(self.imgList["slot_ok"])), new LBitmap(new LBitmapData(self.imgList["slot_ok"])));
@@ -128,7 +130,7 @@
        resultButton.y = 73;
        resultButton.addEventListener(LMouseEvent.MOUSE_UP, self.closeResult);
        self.okLayer.addChild(resultButton);
-       self.okLayer.visible = false;
+       self.okLayer.visible = true;
 
        self.boxLayer.addEventListener(LEvent.ENTER_FRAME, self.onFrame);
      },

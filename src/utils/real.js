@@ -9,8 +9,8 @@ function Reel(index, vueObj) {
   self.speedDownStep = 2;//每次轮播下降速度增量
   self.currentSpeed = 0;//开始的速度
 
-  self.maxNum = 9;//最大的数字 index === 0 ? 7 : 9
-  self.currentNum = 1;//开始的数字
+  self.maxNum = 9;//最大的数字
+  self.currentNum = 9;//开始数字的上一位
   self.stopNum = 0;//获奖区间序号
 
   self.startReel = false;//是否开启滚动，设置为true时则会加入定时事件进行滚动
