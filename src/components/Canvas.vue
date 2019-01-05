@@ -10,7 +10,7 @@
    data() {
      return {
        //各个模块
-       loadingLayer: null, boxLayer: null, drawLayer: null, startLayer: null, okLayer: null,
+       loadingLayer: null, boxLayer: null, drawLayer: null, startLayer: null, okLayer: null, resultTextField: null,
 
        //元件列表
        reelList: [], drawBgList: [], stopBtnList: [],
@@ -26,6 +26,7 @@
          {name: "stop_over", path: "slot_stop_over.png"},
          {name: "slot_ok", path: "slot_ok.png"},
          {name: "close", path: "slot_close.png"},
+         {name: "item0", path: "0.png"},
          {name: "item1", path: "1.png"},
          {name: "item2", path: "2.png"},
          {name: "item3", path: "3.png"},
@@ -39,7 +40,8 @@
        imgList: null,
 
        //获奖数组
-       combination: [[1, 1, 5], [1, 2, 4], [1, 5, 1], [2, 1, 4], [2, 3, 3], [2, 4, 1], [2, 5, 4], [3, 1, 2], [3, 4, 3], [3, 5, 5], [4, 1, 2], [4, 2, 3], [4, 5, 1], [4, 5, 5], [5, 1, 1], [5, 2, 4], [5, 3, 2], [5, 5, 1], [1, 1, 1], [1, 1, 1]]
+       stopNum: 0,
+       combination: [[0, 0, 1], [0, 2, 4], [0, 5, 1], [0, 1, 4], [0, 3, 3], [0, 4, 1]]
      }
    },
    methods: {
@@ -140,6 +142,17 @@
        closeButton.addEventListener(LMouseEvent.MOUSE_UP, self.closeResult);
        self.okLayer.addChild(closeButton);
 
+       //加入文字
+       self.resultTextField = new LTextField();
+       self.resultTextField.x = 367;
+       self.resultTextField.y = 310;
+       self.resultTextField.font = "微软雅黑";
+       self.resultTextField.color = "#FADB43";
+       self.resultTextField.size = 78;
+       self.resultTextField.weight = "bolder";
+       self.resultTextField.textAlign = 'center';
+       self.okLayer.addChild(self.resultTextField);
+
        self.boxLayer.addEventListener(LEvent.ENTER_FRAME, self.onFrame);
      },
      stopEvent(event, currentTarget) {//停止按钮事件
@@ -153,15 +166,15 @@
        //隐藏开始按钮
        this.startLayer.visible = false;
 
-       var stopNum = Math.floor(Math.random() * (this.combination.length / 3));
-       for (var i = 1; i < 3; i++) {
+       this.stopNum = Math.floor(Math.random() * (this.combination.length / 3));
+       for (var i = 1; i < 3; i++) {//第一位不转
          //显示关闭按钮
          this.stopBtnList[i].setState(LButton.STATE_ENABLE);
          this.stopBtnList[i].visible = true;
 
          this.reelList[i].startReel = true;
          this.reelList[i].stopFlag = false;
-         this.reelList[i].stopNum = stopNum;
+         this.reelList[i].stopNum = this.stopNum;
        }
      },
      onFrame() {//定时事件
@@ -183,7 +196,15 @@
            this.stopBtnList[i].visible = false;
          }
 
+         //显示结果页面
          this.okLayer.visible = true;
+
+         //获取后两位获奖号码并显示
+         var drawNumList= this.combination[this.stopNum];
+         drawNumList.shift();
+         this.resultTextField.text = drawNumList.join('');
+         this.resultTextField.speed = 10;
+         this.resultTextField.wind();
        }
      },
      closeResult() {//关闭结果页并显示开始按钮

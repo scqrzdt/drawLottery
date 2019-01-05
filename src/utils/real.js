@@ -9,8 +9,8 @@ function Reel(index, vueObj) {
   self.speedDownStep = 2;//每次轮播下降速度增量
   self.currentSpeed = 0;//开始的速度
 
-  self.maxNum = 9;//最大的数字
-  self.currentNum = 9;//开始数字的上一位
+  self.maxNum = 10;//一共多少个数
+  self.currentNum = 0;//开始数字
   self.stopNum = 0;//获奖区间序号
 
   self.startReel = false;//是否开启滚动，设置为true时则会加入定时事件进行滚动
@@ -47,7 +47,7 @@ function Reel(index, vueObj) {
 //放入数字图片
 Reel.prototype.getReel = function () {
   var self = this;
-  if (self.currentNum > self.maxNum) self.currentNum = 1;
+  if (self.currentNum >= self.maxNum) self.currentNum = 0;
 
   //设置indexs数组的值
   self.indexs[0] = self.currentNum;
