@@ -3,8 +3,6 @@
 </template>
 
 <script>
- import {Reel} from '@/utils/real.js'
-
  export default {
    name: "Canvas",
    data() {
@@ -97,7 +95,7 @@
          self.drawBgList.push(drawBgBitmap);
 
          //放入数字
-         var reel = new Reel(i, self);
+         var reel = new self.$Reel(i, self);
          reel.x = 150 * i + 156;
          reel.y = 300;
          self.drawLayer.addChild(reel);
@@ -196,15 +194,18 @@
            this.stopBtnList[i].visible = false;
          }
 
-         //显示结果页面
-         this.okLayer.visible = true;
+         var self = this;
+         window.setTimeout(function () {
+           //显示结果页面
+           self.okLayer.visible = true;
 
-         //获取后两位获奖号码并显示
-         var drawNumList= this.combination[this.stopNum];
-         drawNumList.shift();
-         this.resultTextField.text = drawNumList.join('');
-         this.resultTextField.speed = 10;
-         this.resultTextField.wind();
+           //获取后两位获奖号码并显示
+           var drawNumList = [].concat(self.combination[self.stopNum]);
+           drawNumList.shift();
+           self.resultTextField.text = drawNumList.join('');
+           self.resultTextField.speed = 20;
+           self.resultTextField.wind();
+         }, 500);
        }
      },
      closeResult() {//关闭结果页并显示开始按钮
