@@ -237,7 +237,7 @@
 
        // /drawLottery/dist/static/database/list.txt
        // /static/database/list.txt
-       this.$axios.get('/drawLottery/dist/static/database/list.txt').then((response) => {
+       this.$axios.get('/static/database/list.txt').then((response) => {
          var list= response.data.split("\n");
          for (var i in list){
            var temp= list[i].split("|");
