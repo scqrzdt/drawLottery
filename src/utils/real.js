@@ -10,7 +10,7 @@ function Reel(index, vueObj) {
   self.currentSpeed = 0;//开始的速度
 
   self.maxNum = 10;//一共多少个数
-  self.currentNum = 0;//开始数字
+  self.currentNum = 9;//开始数字
   self.stopNum = 0;//获奖区间序号
 
   self.startReel = false;//是否开启滚动，设置为true时则会加入定时事件进行滚动
@@ -81,7 +81,7 @@ Reel.prototype.wheel = function () {
   }
 
   //到达预设的值则停止滚动
-  if (self.stopFlag && self.currentSpeed <= self.minSpeed && self.indexs[2] === self.vueObj.combination[self.stopNum][self.index] && self.reels[1].y + self.currentSpeed > 60) {
+  if (self.stopFlag && self.currentSpeed <= self.minSpeed && self.indexs[2] === self.vueObj.drawCombination[self.stopNum][self.index] && self.reels[1].y + self.currentSpeed > 60) {
     self.currentSpeed = 60 - self.reels[1].y;
     self.startReel = false;
   }

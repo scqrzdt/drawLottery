@@ -40,9 +40,10 @@
        ],
        imgList: null,
 
-       //获奖数组
+       //名单相关
        stopNum: 0,
-       combination: [[0, 0, 1], [0, 2, 4], [0, 5, 1], [0, 1, 4], [0, 3, 3], [0, 4, 1]]
+       userList: {},
+       drawCombination: []
      }
    },
    methods: {
@@ -78,6 +79,9 @@
      },
      gameInit(event) {//游戏初始化
        var self = this;
+
+       //读取人员列表txt
+       this.loadDataBase();
 
        self.boxLayer = new LSprite();
        addChild(self.boxLayer);
@@ -149,7 +153,7 @@
        self.resultTextField.y = 310;
        self.resultTextField.font = "微软雅黑";
        self.resultTextField.color = "#FADB43";
-       self.resultTextField.size = 78;
+       self.resultTextField.size = 70;
        self.resultTextField.weight = "bolder";
        self.resultTextField.textAlign = 'center';
        self.okLayer.addChild(self.resultTextField);
@@ -164,10 +168,20 @@
        currentTarget.setState(LButton.STATE_DISABLE);
      },
      startEvent(event) {//开始按钮事件
+       //组装抽奖池
+       this.getDrawCombination();
+
+       if(this.drawCombination.length<=0){
+         alert('奖池内无人');
+         return false;
+       }
+
        //隐藏开始按钮
        this.startLayer.visible = false;
 
-       this.stopNum = Math.floor(Math.random() * (this.combination.length / 3));
+       //随机获取抽奖池抽中序号
+       this.stopNum = Math.floor(Math.random() * this.drawCombination.length);
+
        for (var i = 1; i < 3; i++) {//第一位不转
          //显示关闭按钮
          this.stopBtnList[i].setState(LButton.STATE_ENABLE);
@@ -202,12 +216,15 @@
            //显示结果页面
            self.okLayer.visible = true;
 
-           //获取后两位获奖号码并显示
-           var drawNumList = [].concat(self.combination[self.stopNum]);
-           drawNumList.shift();
-           self.resultTextField.text = drawNumList.join('');
+           //显示获奖人
+           var drawNumList = [].concat(self.drawCombination[self.stopNum]);
+           var drawNum = drawNumList.join('');
+           self.resultTextField.text = drawNum + ' ' + self.userList[drawNum];
            self.resultTextField.speed = 20;
            self.resultTextField.wind();
+
+           //移除获奖人
+           delete self.userList[drawNum];
          }, 500);
        }
      },
@@ -215,11 +232,27 @@
        this.okLayer.visible = false;
        this.startLayer.visible = true;
      },
-     loadData() {
-       this.$axios.get('/users/active').then((response) => {
-         // 在成功的回调里，从 response.data 获取返回数据
-         this.activeUsers = response.data
+     loadDataBase() {
+       var self = this;
+
+       this.$axios.get('/static/database/list.txt').then((response) => {
+         var list= response.data.split("\n");
+         for (var i in list){
+           var temp= list[i].split("|");
+           if(temp[0].trim()!==''){
+             self.userList[temp[0].trim()] = temp[1].trim();
+           }
+         }
        })
+     },
+     getDrawCombination() {
+       this.drawCombination=[];
+       for (var i in this.userList){
+         var temp = i.split("");
+         if (temp[0] && temp[1] && temp[2]) {
+           this.drawCombination.push([parseInt(temp[0]), parseInt(temp[1]), parseInt(temp[2])]);
+         }
+       }
      }
    },
    mounted() {
