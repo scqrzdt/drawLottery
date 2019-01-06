@@ -215,6 +215,12 @@
        this.okLayer.visible = false;
        this.startLayer.visible = true;
      },
+     loadData() {
+       this.$axios.get('/users/active').then((response) => {
+         // 在成功的回调里，从 response.data 获取返回数据
+         this.activeUsers = response.data
+       })
+     }
    },
    mounted() {
      this.init();
