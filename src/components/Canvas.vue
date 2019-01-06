@@ -3,6 +3,9 @@
 </template>
 
 <script>
+ //引入数字图片元件
+ import {Reel} from '@/utils/real.js';
+
  export default {
    name: "Canvas",
    data() {
@@ -95,7 +98,7 @@
          self.drawBgList.push(drawBgBitmap);
 
          //放入数字
-         var reel = new self.$Reel(i, self);
+         var reel = new Reel(i, self);
          reel.x = 150 * i + 156;
          reel.y = 300;
          self.drawLayer.addChild(reel);
