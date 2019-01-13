@@ -235,7 +235,7 @@
      loadDataBase() {
        var self = this;
 
-       var url=(0)?'/drawLottery/dist/static/database/list.txt':'/static/database/list.txt';
+       var url=(1)?'/drawLottery/dist/static/database/list.txt':'/static/database/list.txt';
        this.$axios.get(url).then((response) => {
          var list= response.data.split("\n");
          for (var i in list){
